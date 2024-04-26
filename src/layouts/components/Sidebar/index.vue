@@ -51,7 +51,7 @@ const hiddenScrollbarVerticalBar = computed(() => {
 
 <template>
   <div :class="{ 'has-logo': isLogo }">
-    <Logo v-if="isLogo" :collapse="isCollapse" />
+    <!-- <Logo v-if="isLogo" :collapse="isCollapse" /> -->
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"

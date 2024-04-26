@@ -61,22 +61,150 @@ export const constantRoutes: RouteRecordRaw[] = [
       }
     ]
   },
+
+  // 项目管理
   {
-    path: "/unocss",
+    path: "/project-management",
     component: Layouts,
-    redirect: "/unocss/index",
+    redirect: "/project-management/index",
     children: [
       {
         path: "index",
-        component: () => import("@/views/unocss/index.vue"),
-        name: "UnoCSS",
+        component: import("@/views/project/index.vue"),
+        name: "ProjectManagement",
         meta: {
-          title: "UnoCSS",
-          svgIcon: "unocss"
+          title: "项目管理",
+          elIcon: "Cloudy"
         }
       }
     ]
   },
+
+  // 词典管理
+  {
+    path: "/dictionary-management",
+    component: Layouts,
+    redirect: "/dictionary-management/med-dra",
+    name: "Dictionary",
+    meta: {
+      title: "词典管理",
+      elIcon: "Service"
+    },
+    children: [
+      {
+        path: "med-dra",
+        component: import("@/views/dictionary/MedDRA/index.vue"),
+        name: "MedDRA",
+        meta: {
+          title: "MedDRA",
+          elIcon: "Cloudy"
+        }
+      },
+      {
+        path: "who-drug",
+        component: import("@/views/dictionary/WHOdrug/index.vue"),
+        name: "WHOdrug",
+        meta: {
+          title: "WHOdrug",
+          elIcon: "Cloudy"
+        }
+      },
+      {
+        path: "unit-synonym",
+        component: import("@/views/dictionary/uinit-synonym/index.vue"),
+        name: "UnitSynonym",
+        meta: {
+          title: "单位同义库",
+          elIcon: "Cloudy"
+        }
+      }
+    ]
+  },
+
+  // 角色管理
+  {
+    path: "/role-management",
+    component: Layouts,
+    redirect: "/role-management/index",
+    children: [
+      {
+        path: "index",
+        component: import("@/views/role/index.vue"),
+        name: "RoleManagement",
+        meta: {
+          title: "角色管理",
+          elIcon: "Cloudy"
+        }
+      }
+    ]
+  },
+
+  // 用户管理
+  {
+    path: "/user-management",
+    component: Layouts,
+    redirect: "/user-management/index",
+    children: [
+      {
+        path: "index",
+        component: import("@/views/user/index.vue"),
+        name: "UserManagement",
+        meta: {
+          title: "用户管理",
+          elIcon: "Cloudy"
+        }
+      }
+    ]
+  },
+
+  // 日志管理
+  {
+    path: "/log-management",
+    component: Layouts,
+    redirect: "/dictionary-management/login-og",
+    name: "Log",
+    meta: {
+      title: "日志管理",
+      elIcon: "Service"
+    },
+    children: [
+      {
+        path: "login-log",
+        component: import("@/views/dictionary/MedDRA/index.vue"),
+        name: "LoginLog",
+        meta: {
+          title: "登录日志",
+          elIcon: "Cloudy"
+        }
+      },
+      {
+        path: "operation-log",
+        component: import("@/views/dictionary/WHOdrug/index.vue"),
+        name: "OperationLog",
+        meta: {
+          title: "操作日志",
+          elIcon: "Cloudy"
+        }
+      }
+    ]
+  },
+
+  // {
+  //   path: "/unocss",
+  //   component: Layouts,
+  //   redirect: "/unocss/index",
+  //   children: [
+  //     {
+  //       path: "index",
+  //       component: () => import("@/views/unocss/index.vue"),
+  //       name: "UnoCSS",
+  //       meta: {
+  //         title: "UnoCSS",
+  //         svgIcon: "unocss"
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: "/link",
     meta: {
@@ -132,85 +260,85 @@ export const constantRoutes: RouteRecordRaw[] = [
       }
     ]
   },
-  {
-    path: "/menu",
-    component: Layouts,
-    redirect: "/menu/menu1",
-    name: "Menu",
-    meta: {
-      title: "多级路由",
-      svgIcon: "menu"
-    },
-    children: [
-      {
-        path: "menu1",
-        component: () => import("@/views/menu/menu1/index.vue"),
-        redirect: "/menu/menu1/menu1-1",
-        name: "Menu1",
-        meta: {
-          title: "menu1"
-        },
-        children: [
-          {
-            path: "menu1-1",
-            component: () => import("@/views/menu/menu1/menu1-1/index.vue"),
-            name: "Menu1-1",
-            meta: {
-              title: "menu1-1",
-              keepAlive: true
-            }
-          },
-          {
-            path: "menu1-2",
-            component: () => import("@/views/menu/menu1/menu1-2/index.vue"),
-            redirect: "/menu/menu1/menu1-2/menu1-2-1",
-            name: "Menu1-2",
-            meta: {
-              title: "menu1-2"
-            },
-            children: [
-              {
-                path: "menu1-2-1",
-                component: () => import("@/views/menu/menu1/menu1-2/menu1-2-1/index.vue"),
-                name: "Menu1-2-1",
-                meta: {
-                  title: "menu1-2-1",
-                  keepAlive: true
-                }
-              },
-              {
-                path: "menu1-2-2",
-                component: () => import("@/views/menu/menu1/menu1-2/menu1-2-2/index.vue"),
-                name: "Menu1-2-2",
-                meta: {
-                  title: "menu1-2-2",
-                  keepAlive: true
-                }
-              }
-            ]
-          },
-          {
-            path: "menu1-3",
-            component: () => import("@/views/menu/menu1/menu1-3/index.vue"),
-            name: "Menu1-3",
-            meta: {
-              title: "menu1-3",
-              keepAlive: true
-            }
-          }
-        ]
-      },
-      {
-        path: "menu2",
-        component: () => import("@/views/menu/menu2/index.vue"),
-        name: "Menu2",
-        meta: {
-          title: "menu2",
-          keepAlive: true
-        }
-      }
-    ]
-  },
+  // {
+  //   path: "/menu",
+  //   component: Layouts,
+  //   redirect: "/menu/menu1",
+  //   name: "Menu",
+  //   meta: {
+  //     title: "多级路由",
+  //     svgIcon: "menu"
+  //   },
+  //   children: [
+  //     {
+  //       path: "menu1",
+  //       component: () => import("@/views/menu/menu1/index.vue"),
+  //       redirect: "/menu/menu1/menu1-1",
+  //       name: "Menu1",
+  //       meta: {
+  //         title: "menu1"
+  //       },
+  //       children: [
+  //         {
+  //           path: "menu1-1",
+  //           component: () => import("@/views/menu/menu1/menu1-1/index.vue"),
+  //           name: "Menu1-1",
+  //           meta: {
+  //             title: "menu1-1",
+  //             keepAlive: true
+  //           }
+  //         },
+  //         {
+  //           path: "menu1-2",
+  //           component: () => import("@/views/menu/menu1/menu1-2/index.vue"),
+  //           redirect: "/menu/menu1/menu1-2/menu1-2-1",
+  //           name: "Menu1-2",
+  //           meta: {
+  //             title: "menu1-2"
+  //           },
+  //           children: [
+  //             {
+  //               path: "menu1-2-1",
+  //               component: () => import("@/views/menu/menu1/menu1-2/menu1-2-1/index.vue"),
+  //               name: "Menu1-2-1",
+  //               meta: {
+  //                 title: "menu1-2-1",
+  //                 keepAlive: true
+  //               }
+  //             },
+  //             {
+  //               path: "menu1-2-2",
+  //               component: () => import("@/views/menu/menu1/menu1-2/menu1-2-2/index.vue"),
+  //               name: "Menu1-2-2",
+  //               meta: {
+  //                 title: "menu1-2-2",
+  //                 keepAlive: true
+  //               }
+  //             }
+  //           ]
+  //         },
+  //         {
+  //           path: "menu1-3",
+  //           component: () => import("@/views/menu/menu1/menu1-3/index.vue"),
+  //           name: "Menu1-3",
+  //           meta: {
+  //             title: "menu1-3",
+  //             keepAlive: true
+  //           }
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       path: "menu2",
+  //       component: () => import("@/views/menu/menu2/index.vue"),
+  //       name: "Menu2",
+  //       meta: {
+  //         title: "menu2",
+  //         keepAlive: true
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: "/hook-demo",
     component: Layouts,
