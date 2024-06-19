@@ -62,6 +62,22 @@ export const constantRoutes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: "/own-things",
+    component: Layouts,
+    redirect: "/own-things/index",
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/own-things/index.vue"),
+        name: "OwnThings",
+        meta: {
+          title: "Own things",
+          elIcon: "Cloudy"
+        }
+      }
+    ]
+  },
+  {
     path: "/unocss",
     component: Layouts,
     redirect: "/unocss/index",

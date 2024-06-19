@@ -33,12 +33,25 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       /** 端口被占用时，是否直接退出 */
       strictPort: false,
       /** 接口代理 */
+      /** 第一种写法 */
+      // proxy: {
+      //   "/api/v1": {
+      //     // target: "https://mock.mengxuegu.com/mock/63218b5fb4c53348ed2bc212",
+      //     target: "http://172.16.1.225:5000",
+      //     ws: true,
+      //     /** 是否允许跨域 */
+      //     changeOrigin: true
+      //   }
+      // },
+      /** 第二种写法 */
       proxy: {
         "/api/v1": {
-          target: "https://mock.mengxuegu.com/mock/63218b5fb4c53348ed2bc212",
+          // target: "https://mock.mengxuegu.com/mock/63218b5fb4c53348ed2bc212",
+          target: "http://172.16.1.225:5000",
           ws: true,
           /** 是否允许跨域 */
-          changeOrigin: true
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/v1/, "")
         }
       },
       /** 预热常用文件，提高初始页面加载速度 */
@@ -93,11 +106,11 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       }),
       /** UnoCSS */
       UnoCSS()
-    ],
+    ]
     /** Vitest 单元测试配置：https://cn.vitest.dev/config */
-    test: {
-      include: ["tests/**/*.test.ts"],
-      environment: "jsdom"
-    }
+    // test: {
+    //   include: ["tests/**/*.test.ts"],
+    //   environment: "jsdom"
+    // }
   }
 }
