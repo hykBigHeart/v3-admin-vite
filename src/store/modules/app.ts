@@ -22,6 +22,9 @@ export const useAppStore = defineStore("app", () => {
   /** 设备类型 */
   const device = ref<DeviceEnum>(DeviceEnum.Desktop)
 
+  /** 版本名称 */
+  const version = ref("第一")
+
   /** 监听侧边栏 opened 状态 */
   watch(
     () => sidebar.opened,
@@ -43,5 +46,10 @@ export const useAppStore = defineStore("app", () => {
     device.value = value
   }
 
-  return { device, sidebar, toggleSidebar, closeSidebar, toggleDevice }
+  /** 切换版本 */
+  const toggleVersion = (value: string) => {
+    version.value = value
+  }
+
+  return { device, sidebar, version, toggleSidebar, closeSidebar, toggleDevice, toggleVersion }
 })
