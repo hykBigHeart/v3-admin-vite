@@ -6,6 +6,7 @@ import { type FormInstance, type FormRules, ElMessage, ElMessageBox } from "elem
 import { Search, Refresh, CirclePlus, Delete, Download, RefreshRight } from "@element-plus/icons-vue"
 import { usePagination } from "@/hooks/usePagination"
 import { cloneDeep } from "lodash-es"
+import updateDialog from "./compenents/update.vue"
 
 defineOptions({
   // 命名当前组件
@@ -22,6 +23,7 @@ const DEFAULT_FORM_DATA: CreateOrUpdateTableRequestData = {
   password: ""
 }
 const dialogVisible = ref<boolean>(false)
+const fullscreen = ref<boolean>(false)
 const formRef = ref<FormInstance | null>(null)
 const formData = ref<CreateOrUpdateTableRequestData>(cloneDeep(DEFAULT_FORM_DATA))
 const formRules: FormRules<CreateOrUpdateTableRequestData> = {
@@ -107,6 +109,10 @@ const resetSearch = () => {
 }
 //#endregion
 
+const sortChange = (val: any) => {
+  console.log(val)
+}
+
 /** 监听分页参数的变化 */
 watch([() => paginationData.currentPage, () => paginationData.pageSize], getTableData, { immediate: true })
 </script>
@@ -143,16 +149,17 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         </div>
       </div>
       <div class="table-wrapper">
-        <el-table :data="tableData">
+        <el-table :data="tableData" @sort-change="sortChange">
+          <el-table-column type="index" width="100" label="序号" sortable />
           <el-table-column type="selection" width="50" align="center" />
-          <el-table-column prop="username" label="用户名" align="center" />
+          <el-table-column prop="username" label="用户名" align="center" sortable />
           <el-table-column prop="roles" label="角色" align="center">
             <template #default="scope">
               <el-tag v-if="scope.row.roles === 'admin'" type="primary" effect="plain">admin</el-tag>
               <el-tag v-else type="warning" effect="plain">{{ scope.row.roles }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="phone" label="手机号" align="center" />
+          <el-table-column prop="phone" label="手机号" align="center" sortable />
           <el-table-column prop="email" label="邮箱" align="center" />
           <el-table-column prop="status" label="状态" align="center">
             <template #default="scope">
@@ -160,7 +167,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
               <el-tag v-else type="danger" effect="plain">禁用</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="createTime" label="创建时间" align="center" />
+          <el-table-column prop="createTime" label="创建时间" align="center" sortable />
           <el-table-column fixed="right" label="操作" width="150" align="center">
             <template #default="scope">
               <el-button type="primary" text bg size="small" @click="handleUpdate(scope.row)">修改</el-button>
@@ -183,11 +190,15 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       </div>
     </el-card>
     <!-- 新增/修改 -->
-    <el-dialog
+    <updateDialog :dialogVisible="dialogVisible" :rowData="formData" @update:dialogVisible="dialogVisible = $event" />
+
+    <!-- <el-dialog
       v-model="dialogVisible"
       :title="formData.id === undefined ? '新增用户' : '修改用户'"
       @closed="resetForm"
       width="30%"
+      draggable
+      :fullscreen=fullscreen
     >
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" label-position="left">
         <el-form-item prop="username" label="用户名">
@@ -199,9 +210,11 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button @click="fullscreen = true">全屏</el-button>
+        <el-button @click="fullscreen = false">小屏</el-button>
         <el-button type="primary" @click="handleCreateOrUpdate" :loading="loading">确认</el-button>
       </template>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
