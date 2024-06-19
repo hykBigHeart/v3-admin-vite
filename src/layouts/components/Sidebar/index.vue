@@ -47,12 +47,20 @@ const tipLineWidth = computed(() => {
 const hiddenScrollbarVerticalBar = computed(() => {
   return isTop.value ? "none" : "block"
 })
+
+// 切换左侧导航
+const toggleTab = () => {
+  console.log("activeMenu", activeMenu)
+  if (activeMenu.value === "/role-management/index") {
+    appStore.toggleVersion("脚色管理")
+  } else appStore.toggleVersion("大理石")
+}
 </script>
 
 <template>
   <div :class="{ 'has-logo': isLogo }">
     <!-- <Logo v-if="isLogo" :collapse="isCollapse" /> -->
-    <el-scrollbar wrap-class="scrollbar-wrapper">
+    <el-scrollbar wrap-class="scrollbar-wrapper" @click="toggleTab">
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse && !isTop"
