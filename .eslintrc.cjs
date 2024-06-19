@@ -34,17 +34,19 @@ module.exports = {
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
-      {
-        argsIgnorePattern: "^_",
-        varsIgnorePattern: "^_"
-      }
+      // {
+      //   argsIgnorePattern: "^_",
+      //   varsIgnorePattern: "^_"
+      // }
+      { varsIgnorePattern: '.*', args: 'none' }
     ],
     "no-unused-vars": [
       "error",
-      {
-        argsIgnorePattern: "^_",
-        varsIgnorePattern: "^_"
-      }
+      // {
+      //   argsIgnorePattern: "^_",
+      //   varsIgnorePattern: "^_"
+      // }
+      { varsIgnorePattern: '.*', args: 'none' }
     ],
     // Vue
     "vue/no-v-html": "off",
