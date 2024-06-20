@@ -1,6 +1,12 @@
 <script lang="ts" setup>
 import { reactive, ref, watch } from "vue"
-import { createTableDataApi, deleteTableDataApi, updateTableDataApi, getTableDataApi } from "@/api/own"
+import {
+  createTableDataApi,
+  deleteTableDataApi,
+  deleteBatchTableDataApi,
+  updateTableDataApi,
+  getTableDataApi
+} from "@/api/own"
 import { type CreateOrUpdateTableRequestData, type GetTableData } from "@/api/own/types/own"
 import { type FormInstance, type FormRules, ElMessage, ElMessageBox } from "element-plus"
 import { Search, Refresh, CirclePlus, Delete, Download, RefreshRight } from "@element-plus/icons-vue"
@@ -58,6 +64,26 @@ const handleDelete = (row: GetTableData) => {
     type: "warning"
   }).then(() => {
     deleteTableDataApi(row.id).then(() => {
+      ElMessage.success("删除成功")
+      getTableData()
+    })
+  })
+}
+//#endregion
+
+//#region 批量删
+const refTable = ref()
+const handleBatchDelete = () => {
+  const persons = refTable.value.getSelectionRows().map((item: any) => item.username)
+  const ids = refTable.value.getSelectionRows().map((item: any) => item.id)
+  console.log(ids)
+  // console.log(refTable.value.getSelectionRows())
+  ElMessageBox.confirm(`正在删除用户：${persons.join()}，确认删除？`, "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
+  }).then(() => {
+    deleteBatchTableDataApi(ids).then(() => {
       ElMessage.success("删除成功")
       getTableData()
     })
@@ -131,7 +157,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       <div class="toolbar-wrapper">
         <div>
           <el-button type="primary" :icon="CirclePlus" @click="dialogVisible = true">新增用户</el-button>
-          <el-button type="danger" :icon="Delete">批量删除</el-button>
+          <el-button type="danger" :icon="Delete" @click="handleBatchDelete">批量删除</el-button>
         </div>
         <div>
           <el-tooltip content="下载">
@@ -143,7 +169,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         </div>
       </div>
       <div class="table-wrapper">
-        <el-table :data="tableData">
+        <el-table ref="refTable" :data="tableData">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column prop="username" label="用户名" align="center" />
           <el-table-column prop="roles" label="角色" align="center">

@@ -18,10 +18,19 @@ export function deleteTableDataApi(id: string) {
   })
 }
 
+/** 批量删 */
+export function deleteBatchTableDataApi(ids: string[]) {
+  return request({
+    url: `users`,
+    method: "delete",
+    data: { ids }
+  })
+}
+
 /** 改 */
 export function updateTableDataApi(data: Table.CreateOrUpdateTableRequestData) {
   return request({
-    url: "table",
+    url: "user",
     method: "put",
     data
   })
