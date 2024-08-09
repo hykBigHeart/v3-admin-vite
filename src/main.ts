@@ -30,3 +30,4 @@ app.use(store).use(router)
 router.isReady().then(() => {
   app.mount("#app")
 })
+console.log(1)
