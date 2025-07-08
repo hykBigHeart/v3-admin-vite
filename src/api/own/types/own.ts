@@ -2,6 +2,7 @@ export interface CreateOrUpdateTableRequestData {
   id?: string
   username: string
   password?: string
+  imageUrl: string
 }
 
 export interface GetTableRequestData {
@@ -23,6 +24,7 @@ export interface GetTableData {
   roles: string
   status: boolean
   username: string
+  imageUrl: string
 }
 
 export type GetTableResponseData = ApiResponseData<{

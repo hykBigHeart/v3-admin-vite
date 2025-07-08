@@ -25,7 +25,8 @@ const { paginationData, handleCurrentChange, handleSizeChange } = usePagination(
 const DEFAULT_FORM_DATA: CreateOrUpdateTableRequestData = {
   id: undefined,
   username: "",
-  password: ""
+  password: "",
+  imageUrl: ""
 }
 const dialogVisible = ref<boolean>(false)
 const formRef = ref<FormInstance | null>(null)
@@ -34,6 +35,13 @@ const formRules: FormRules<CreateOrUpdateTableRequestData> = {
   username: [{ required: true, trigger: "blur", message: "请输入用户名" }],
   password: [{ required: true, trigger: "blur", message: "请输入密码" }]
 }
+
+const handleSuccess = (res: any, uploadFile: any) => {
+  if (res.code == 0) formData.value.imageUrl = res.url
+}
+const handleError = () => {}
+const beforeUpload = () => {}
+
 const handleCreateOrUpdate = () => {
   formRef.value?.validate((valid: boolean, fields) => {
     if (!valid) return console.error("表单校验不通过", fields)
@@ -172,6 +180,11 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         <el-table ref="refTable" :data="tableData">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column prop="username" label="用户名" align="center" />
+          <el-table-column prop="profile_picture" label="头像" align="center">
+            <template #default="scope">
+              <el-avatar :src="scope.row.imageUrl" />
+            </template>
+          </el-table-column>
           <el-table-column prop="roles" label="角色" align="center">
             <template #default="scope">
               <el-tag v-if="scope.row.roles === 'admin'" type="primary" effect="plain">admin</el-tag>
@@ -221,6 +234,23 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         </el-form-item>
         <el-form-item prop="password" label="密码" v-if="formData.id === undefined">
           <el-input v-model="formData.password" placeholder="请输入" />
+        </el-form-item>
+        <el-form-item prop="password" label="上传头像" v-if="formData.id === undefined">
+          <el-upload
+            class="upload-demo"
+            action="http://172.16.1.129:5000/upload"
+            name="file"
+            :show-file-list="false"
+            :on-success="handleSuccess"
+            :on-error="handleError"
+            :headers="{ Accept: 'application/json' }"
+            :before-upload="beforeUpload"
+          >
+            <div v-if="formData.imageUrl" style="margin-top: 20px">
+              <img :src="formData.imageUrl" alt="上传预览" style="max-width: 300px" />
+            </div>
+            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+          </el-upload>
         </el-form-item>
       </el-form>
       <template #footer>
