@@ -18,8 +18,6 @@ defineOptions({
   name: "Own"
 })
 
-// 升级eslint后可以推送代码了，但是eslint.config.js 配置了 ignore src，下次提交的时候 把src去掉看看还能不能提交
-
 const loading = ref<boolean>(false)
 const { paginationData, handleCurrentChange, handleSizeChange } = usePagination()
 
