@@ -1,6 +1,15 @@
 import { request } from "@/utils/service"
 import type * as Login from "./types/login"
 
+// 注册
+export function registerApi(data: Login.LoginRequestData) {
+  return request<Login.LoginCodeResponseData>({
+    url: "user/register",
+    method: "post",
+    data
+  })
+}
+
 /** 获取登录验证码 */
 export function getLoginCodeApi() {
   return request<Login.LoginCodeResponseData>({

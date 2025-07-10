@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { reactive, ref } from "vue"
+import { reactive, ref, watch } from "vue"
 import { useRouter } from "vue-router"
 import { useUserStore } from "@/store/modules/user"
 import { type FormInstance, type FormRules } from "element-plus"
 import { User, Lock, Key, Picture, Loading } from "@element-plus/icons-vue"
-import { getLoginCodeApi } from "@/api/login"
+import { getLoginCodeApi, registerApi } from "@/api/login"
 import { type LoginRequestData } from "@/api/login/types/login"
 import ThemeSwitch from "@/components/ThemeSwitch/index.vue"
 import Owl from "./components/Owl.vue"
@@ -15,6 +15,8 @@ const { isFocus, handleBlur, handleFocus } = useFocus()
 
 /** 登录表单元素的引用 */
 const loginFormRef = ref<FormInstance | null>(null)
+//
+const currentState = ref<"login" | "register">("login")
 
 /** 登录按钮 Loading */
 const loading = ref(false)
@@ -35,23 +37,41 @@ const loginFormRules: FormRules = {
   ],
   code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
 }
+
+/** 监听分页参数的变化 */
+watch([() => currentState.value], () => {
+  loginFormData.username = ""
+  loginFormData.password = ""
+  loginFormData.code = ""
+})
+
 /** 登录逻辑 */
 const handleLogin = () => {
   loginFormRef.value?.validate((valid: boolean, fields) => {
     if (valid) {
       loading.value = true
-      useUserStore()
-        .login(loginFormData)
-        .then(() => {
-          router.push({ path: "/" })
+      if (currentState.value == "register") {
+        registerApi(loginFormData).then((res) => {
+          console.log("res", res)
+          if (res.code == 0) {
+            loading.value = false
+            currentState.value = "login"
+          }
         })
-        .catch(() => {
-          createCode()
-          loginFormData.password = ""
-        })
-        .finally(() => {
-          loading.value = false
-        })
+      } else {
+        useUserStore()
+          .login(loginFormData)
+          .then(() => {
+            router.push({ path: "/" })
+          })
+          .catch(() => {
+            createCode()
+            loginFormData.password = ""
+          })
+          .finally(() => {
+            loading.value = false
+          })
+      }
     } else {
       console.error("表单校验不通过", fields)
     }
@@ -131,8 +151,14 @@ createCode()
               </template>
             </el-input>
           </el-form-item>
-          <el-button :loading="loading" type="primary" size="large" @click.prevent="handleLogin">登 录</el-button>
+          <el-button :loading="loading" type="primary" size="large" @click.prevent="handleLogin">{{
+            currentState == "login" ? "登 录" : "注 册"
+          }}</el-button>
         </el-form>
+        <p v-if="currentState == 'login'">
+          还没有账号？ <el-link type="primary" @click="currentState = 'register'">点击注册</el-link>
+        </p>
+        <p v-else>已有账号，<el-link type="primary" @click="currentState = 'login'">点击登录</el-link></p>
       </div>
     </div>
   </div>
@@ -169,7 +195,7 @@ createCode()
       }
     }
     .content {
-      padding: 20px 50px 50px 50px;
+      padding: 20px 50px 0px 50px;
       :deep(.el-input-group__append) {
         padding: 0;
         overflow: hidden;
@@ -185,6 +211,9 @@ createCode()
       .el-button {
         width: 100%;
         margin-top: 10px;
+      }
+      p {
+        text-align: right;
       }
     }
   }
