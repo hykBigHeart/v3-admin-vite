@@ -52,7 +52,6 @@ const handleLogin = () => {
       loading.value = true
       if (currentState.value == "register") {
         registerApi(loginFormData).then((res) => {
-          console.log("res", res)
           if (res.code == 0) {
             loading.value = false
             currentState.value = "login"

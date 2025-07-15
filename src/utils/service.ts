@@ -39,6 +39,9 @@ function createService() {
         case 0:
           // 本系统采用 code === 0 来表示没有业务错误
           return apiData
+        case 1:
+          ElMessage.error("密码 or 账号错误")
+          return
         case 401:
           // Token 过期时
           return logout()
