@@ -4,7 +4,7 @@ import type * as Table from "./types/own"
 /** 增 */
 export function createTableDataApi(data: Table.CreateOrUpdateTableRequestData) {
   return request({
-    url: "user",
+    url: "secure/user",
     method: "post",
     data
   })
@@ -13,7 +13,7 @@ export function createTableDataApi(data: Table.CreateOrUpdateTableRequestData) {
 /** 删 */
 export function deleteTableDataApi(id: string) {
   return request({
-    url: `user/${id}`,
+    url: `secure/user/${id}`,
     method: "delete"
   })
 }
@@ -21,7 +21,7 @@ export function deleteTableDataApi(id: string) {
 /** 批量删 */
 export function deleteBatchTableDataApi(ids: string[]) {
   return request({
-    url: `users`,
+    url: `secure/users`,
     method: "delete",
     data: { ids }
   })
@@ -30,7 +30,7 @@ export function deleteBatchTableDataApi(ids: string[]) {
 /** 改 */
 export function updateTableDataApi(data: Table.CreateOrUpdateTableRequestData) {
   return request({
-    url: "user",
+    url: "secure/user",
     method: "put",
     data
   })
@@ -39,7 +39,7 @@ export function updateTableDataApi(data: Table.CreateOrUpdateTableRequestData) {
 /** 查 */
 export function getTableDataApi(params: Table.GetTableRequestData) {
   return request<Table.GetTableResponseData>({
-    url: "users",
+    url: "secure/users",
     method: "get",
     params
   })
