@@ -6,8 +6,10 @@ import { getToken } from "./cache/cookies"
 
 /** 退出登录并强制刷新页面（会重定向到登录页） */
 function logout() {
-  useUserStoreHook().logout()
-  location.reload()
+  setTimeout(() => {
+    useUserStoreHook().logout()
+    location.reload()
+  }, 1000)
 }
 
 /** 创建请求实例 */
@@ -23,6 +25,7 @@ function createService() {
   // 响应拦截（可根据具体业务作出相应的调整）
   service.interceptors.response.use(
     (response) => {
+      // console.log('res', response);
       // apiData 是 api 返回的数据
       const apiData = response.data
       // 二进制数据则直接返回
@@ -52,6 +55,7 @@ function createService() {
       }
     },
     (error) => {
+      // console.log('err', error);
       // status 是 HTTP 状态码
       const status = get(error, "response.status")
       switch (status) {
@@ -109,7 +113,8 @@ function createRequest(service: AxiosInstance) {
         Authorization: token ? `Bearer ${token}` : undefined,
         "Content-Type": "application/json"
       },
-      timeout: 5000,
+      // timeout: 5000,
+      timeout: 1000 * 60,
       baseURL: import.meta.env.VITE_BASE_API,
       data: {}
     }
