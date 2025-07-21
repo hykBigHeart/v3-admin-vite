@@ -12,6 +12,7 @@ import { type FormInstance, type FormRules, ElMessage, ElMessageBox } from "elem
 import { Search, Refresh, CirclePlus, Delete, Download, RefreshRight } from "@element-plus/icons-vue"
 import { usePagination } from "@/hooks/usePagination"
 import { cloneDeep } from "lodash-es"
+import { getToken } from "@/utils/cache/cookies"
 
 defineOptions({
   // 命名当前组件
@@ -235,15 +236,15 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         <el-form-item prop="password" label="密码" v-if="formData.id === undefined">
           <el-input v-model="formData.password" placeholder="请输入" />
         </el-form-item>
-        <el-form-item prop="password" label="上传头像" v-if="formData.id === undefined">
+        <el-form-item prop="password" label="上传头像">
           <el-upload
             class="upload-demo"
-            action="http://172.16.1.129:5000/upload"
+            action="http://172.16.1.129:5000/secure/upload"
             name="file"
             :show-file-list="false"
             :on-success="handleSuccess"
             :on-error="handleError"
-            :headers="{ Accept: 'application/json' }"
+            :headers="{ Accept: 'application/json', Authorization: `Bearer ${getToken()}` }"
             :before-upload="beforeUpload"
           >
             <div v-if="formData.imageUrl" style="margin-top: 20px">
